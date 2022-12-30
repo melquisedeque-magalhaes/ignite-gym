@@ -62,13 +62,19 @@ export function Profile() {
 
         <Input
           bg="gray.600"  
-          placeholder="Senha"
+          placeholder="Senha antiga"
           secureTextEntry 
         />
 
         <Input
           bg="gray.600"  
-          placeholder="Confirme sua senha"
+          placeholder="Nova senha"
+          secureTextEntry 
+        />
+
+        <Input
+          bg="gray.600"  
+          placeholder="Confirme nova senha"
           secureTextEntry 
         />
 

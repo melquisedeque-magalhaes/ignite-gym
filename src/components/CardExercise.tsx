@@ -24,7 +24,7 @@ export function CardExercise({ title, description, ...rest }: CardExerciseProps)
           source={{
             uri: 'http://conteudo.imguol.com.br/c/entretenimento/35/2019/04/09/pulley-frente-1554824315336_v2_1254x837.jpg'
           }}
-          resizeMode="center"
+          resizeMode="cover"
           w={16}
           h={16}
           alt={title}

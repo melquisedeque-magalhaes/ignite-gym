@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { FlatList, Heading, HStack, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 
 import { CardExercise } from "@components/CardExercise";
 import { Group } from "@components/Group";
 import { HeaderHome } from "@components/HeaderHome";
 
+import { AppNavigationRoutesProps } from '@routes/app.routes'
+
 
 export function Home() {
+
+  const { navigate } = useNavigation<AppNavigationRoutesProps>()
 
   const exercisesData = [{ id: '1', name: 'Puxada frontal', description: '3 séries x 12 repetições' }]
 
@@ -34,6 +39,7 @@ export function Home() {
         }}
         my={10}
         maxH={10}
+        minH={10}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
@@ -63,7 +69,8 @@ export function Home() {
           renderItem={({ item }) => 
             <CardExercise 
               title={item.name} 
-              description={item.description} 
+              description={item.description}
+              onPress={() => navigate('exercise')} 
             />
           }
           _contentContainerStyle={{

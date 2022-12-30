@@ -12,8 +12,8 @@ export function CardHistory() {
       justifyContent="space-between"
       h={20}
     >
-      <VStack>
-        <Heading color="white" fontSize="md" textTransform="capitalize">
+      <VStack flex={1}>
+        <Heading color="white" fontSize="md" numberOfLines={1} textTransform="capitalize">
           Costas
         </Heading>
         <Text color="gray.100" fontSize="lg" numberOfLines={1}>

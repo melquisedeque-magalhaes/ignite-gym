@@ -1,6 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
+import { NativeBaseProvider } from 'native-base';
+
+import { Loading } from '@components/Loading';
+import { THEME } from './src/theme';
+import { Routes } from '@routes/index';
 
 export default function App() {
 
@@ -10,14 +14,14 @@ export default function App() {
   })
 
   return (
-    <View>
-      <StatusBar 
-        style='light'
-        backgroundColor='transparent'
-        translucent
-      />
-      {isFontsLoaded ? <Text>Hello World!</Text> : <Text>Carregando...</Text>}
-    </View>
+    <NativeBaseProvider theme={THEME}>
+        <StatusBar 
+          style='light'
+          backgroundColor='transparent'
+          translucent
+        />
+        {isFontsLoaded ? <Routes /> : <Loading />}
+    </NativeBaseProvider>
   );
 }
 

@@ -1,8 +1,10 @@
+import { useState } from "react";
+import { FlatList, Heading, HStack, VStack } from "native-base";
+
 import { CardExercise } from "@components/CardExercise";
 import { Group } from "@components/Group";
 import { HeaderHome } from "@components/HeaderHome";
-import { FlatList, Heading, HStack, VStack } from "native-base";
-import { useState } from "react";
+
 
 export function Home() {
 
@@ -37,12 +39,11 @@ export function Home() {
       />
 
       <VStack px={6}>
-        <HStack>
+        <HStack justifyContent="space-between">
           <Heading 
             color="gray.200" 
             fontFamily="heading" 
             fontSize="md" 
-            flex={1}
           >
             Exercícios
           </Heading>

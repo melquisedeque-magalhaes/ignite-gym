@@ -16,7 +16,7 @@ export function Home() {
   const [exercises, setExercises] = useState(exercisesData)
 
   return(
-    <VStack flex={1}  pb={10}>
+    <VStack flex={1} pb={10}>
       <HeaderHome />
 
       <FlatList 
@@ -53,7 +53,7 @@ export function Home() {
             fontFamily="heading" 
             fontSize="md"
           >
-            4
+            {exercises.length}
           </Heading>
         </HStack>
 
@@ -66,6 +66,9 @@ export function Home() {
               description={item.description} 
             />
           }
+          _contentContainerStyle={{
+            pb: 20
+          }}
           my={3}
           showsVerticalScrollIndicator={false}
         />

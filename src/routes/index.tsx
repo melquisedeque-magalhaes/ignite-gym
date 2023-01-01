@@ -12,7 +12,7 @@ export function Routes() {
 
   theme.colors.background = colors.gray[700]
 
-  const isAuthenticated = true
+  const isAuthenticated = false
 
   return(
     <Box flex={1} bg="gray.700">

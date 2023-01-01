@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { Center, Heading, ScrollView, Skeleton, VStack } from "native-base";
+import { Alert, TouchableOpacity } from "react-native";
+import { Center, Heading, ScrollView, Skeleton, useToast, VStack } from "native-base";
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
 
 import { Avatar } from "@components/Avatar";
 import { Button } from "@components/Button";
@@ -12,6 +14,46 @@ const AVATAR_SIZE = 148
 export function Profile() {
 
   const [isAvatarLoading, setIsAvatarLoading] = useState(false)
+
+  const [avatar, setAvatar] = useState('https://github.com/melquisedeque-magalhaes.png')
+
+  const toast = useToast()
+
+  async function handleAvatarSelect() {
+    try {
+      setIsAvatarLoading(true)
+
+      const avatarSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true
+      })
+  
+      if(avatarSelected.canceled)
+        return
+
+      if(avatarSelected.assets[0].uri){
+        const avatarInfo = await FileSystem.getInfoAsync(avatarSelected.assets[0].uri)
+
+        if(avatarInfo.size && (avatarInfo.size / 1024 / 1024) > 5){
+          toast.show({
+            title: 'Escolha uma imagem de ate 5MB.',
+            placement: 'top',
+            bgColor: 'red.500'
+          })
+          return
+        }
+
+        setAvatar(avatarSelected.assets[0].uri)
+      }
+  
+    }catch(err) {
+      console.log(err)
+    }finally {
+      setIsAvatarLoading(false)
+    }
+  }
 
   return(
     <VStack flex={1}>
@@ -32,13 +74,13 @@ export function Profile() {
             : 
               <Avatar 
                 size={AVATAR_SIZE} 
-                source={{ uri: 'https://github.com/melquisedeque-magalhaes.png' }} 
+                source={{ uri: avatar }} 
                 alt="avatar do usuário"
               />
 
           }
           
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleAvatarSelect}>
             <Heading mt={3} color="green.500" fontSize="md">Alterar foto</Heading>
           </TouchableOpacity>
         </Center>

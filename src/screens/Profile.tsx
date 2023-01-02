@@ -81,7 +81,7 @@ export function Profile() {
           }
           
           <TouchableOpacity onPress={handleAvatarSelect}>
-            <Heading mt={3} color="green.500" fontSize="md">Alterar foto</Heading>
+            <Heading mt={3} color="green.500" fontFamily="heading" fontSize="md">Alterar foto</Heading>
           </TouchableOpacity>
         </Center>
 
@@ -98,7 +98,7 @@ export function Profile() {
           value="melqui.sodre15@gmail.com" 
         />
 
-        <Heading mb={2} mt={3} color="gray.200" fontSize="md">
+        <Heading mb={2} mt={3} color="gray.200" fontFamily="heading" fontSize="md">
           Alterar senha
         </Heading>
 

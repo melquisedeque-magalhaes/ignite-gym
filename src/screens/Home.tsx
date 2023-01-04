@@ -8,7 +8,6 @@ import { HeaderHome } from "@components/HeaderHome";
 
 import { AppNavigationRoutesProps } from '@routes/app.routes'
 
-
 export function Home() {
 
   const { navigate } = useNavigation<AppNavigationRoutesProps>()

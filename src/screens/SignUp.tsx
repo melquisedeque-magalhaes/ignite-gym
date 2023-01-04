@@ -1,4 +1,5 @@
-import { Image, VStack, Center, ScrollView } from "native-base";
+import { useState } from "react";
+import { Image, VStack, Center, ScrollView, useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,7 +11,13 @@ import { Title } from "@components/Title";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
-import { signUpSchema } from "@validators/signUpSchema";
+import { signUpSchema } from "@validators/signUpSchema"
+
+import { api } from "@services/api";
+
+import { AppError } from "@errors/AppError";
+
+import { useAuth } from "@hooks/useAuth";
 
 type InputsTypes = {
   name: string
@@ -21,7 +28,13 @@ type InputsTypes = {
 
 export function SignUp() {
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const { goBack } = useNavigation()
+
+  const toast = useToast()
+
+  const { signIn } = useAuth()
 
   const { control, handleSubmit, formState: { errors } } = useForm<InputsTypes>({
     defaultValues: {
@@ -33,8 +46,30 @@ export function SignUp() {
     resolver: yupResolver(signUpSchema)
   })
 
-  function handleCreateAccount(inputs: InputsTypes){
-    console.log(inputs)
+  async function handleCreateAccount({ email, name, password }: InputsTypes){
+    try {
+      setIsLoading(true)
+      await api.post('/users', {
+        name,
+        email,
+        password
+      })
+
+      await signIn({ email, password })
+    }catch(error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError ? error.message : 'Não foi possivel criar a conta. tente novamente mais tarde!'
+      
+      toast.show({
+        title: title,
+        placement: 'top',
+        bgColor: 'red.500'
+      })
+      
+    }finally {
+      setIsLoading(false)
+    }
   }
 
   return(
@@ -118,7 +153,11 @@ export function SignUp() {
           )}
         />
 
-        <Button title="Criar e acessar" onPress={handleSubmit(handleCreateAccount)} />
+        <Button 
+          title="Criar e acessar" 
+          onPress={handleSubmit(handleCreateAccount)} 
+          isLoading={isLoading} 
+        />
 
         <Button 
           onPress={() => goBack()} 

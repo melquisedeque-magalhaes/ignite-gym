@@ -2,12 +2,15 @@ import { Heading, HStack, Icon, Image, Text, VStack } from "native-base";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { Entypo } from '@expo/vector-icons'
 
+import { api } from "@services/api";
+
 interface CardExerciseProps extends TouchableOpacityProps {
   title: string
   description: string
+  img: string
 }
 
-export function CardExercise({ title, description, ...rest }: CardExerciseProps) {
+export function CardExercise({ title, description, img, ...rest }: CardExerciseProps) {
   return(
     <TouchableOpacity {...rest}>
       <HStack 
@@ -21,9 +24,7 @@ export function CardExercise({ title, description, ...rest }: CardExerciseProps)
       >
 
         <Image 
-          source={{
-            uri: 'http://conteudo.imguol.com.br/c/entretenimento/35/2019/04/09/pulley-frente-1554824315336_v2_1254x837.jpg'
-          }}
+          source={{ uri: `${api.defaults.baseURL}/exercise/thumb/${img}`}}
           resizeMode="cover"
           w={16}
           h={16}

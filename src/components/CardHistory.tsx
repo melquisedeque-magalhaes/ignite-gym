@@ -1,6 +1,12 @@
 import { Heading, HStack, Text, VStack } from "native-base";
 
-export function CardHistory() {
+interface CardHistoryProps {
+  name: string
+  group: string
+  hour: string
+}
+
+export function CardHistory({ group, hour, name }: CardHistoryProps) {
   return(
     <HStack 
       w="full" 
@@ -14,15 +20,15 @@ export function CardHistory() {
     >
       <VStack flex={1}>
         <Heading fontFamily="heading" color="white" fontSize="md" numberOfLines={1} textTransform="capitalize">
-          Costas
+          {group}
         </Heading>
         <Text color="gray.100" fontSize="lg" numberOfLines={1}>
-          Puxada frontal
+          {name}
         </Text>
       </VStack>
 
       <Text color="gray.300" fontSize="md">
-        08:56
+        {hour}
       </Text>
     </HStack>
   )

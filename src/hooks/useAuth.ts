@@ -48,6 +48,19 @@ export function useAuth() {
     }
   }
 
+  async function updateUser(user: User) {
+    try {
+      setIsLoadingUserStorage(true)
+      
+      setUser(user)
+      await userSaveStorage(user)
+    }catch(error){
+      throw error
+    }finally{
+      setIsLoadingUserStorage(false)
+    }
+  }
+
   async function getUser() {
     try {
       const userStorage = await getUserStorage()
@@ -85,6 +98,7 @@ export function useAuth() {
   return {
     signIn,
     user,
+    updateUser,
     signOut,
     isLoadingUserStorage
   }

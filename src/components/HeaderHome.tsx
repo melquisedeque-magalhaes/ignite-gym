@@ -1,11 +1,14 @@
 import { TouchableOpacity } from "react-native";
-import { Heading, HStack, Icon, Text, useToast, VStack } from "native-base";
+import { Heading, HStack, Icon, Skeleton, Text, useToast, VStack } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { Avatar } from "./Avatar";
 
 import { useAuth } from "@hooks/useAuth";
 import defaultAvatar from '@assets/userPhotoDefault.png'
+import { api } from "@services/api";
+
+const AVATAR_SIZE = 16
 
 export function HeaderHome() {
 
@@ -27,10 +30,14 @@ export function HeaderHome() {
 
   return(
     <HStack pt={10} px={6} pb={5} bg="gray.600" alignItems="center">
+      
       <Avatar 
-        size={16} 
-        source={ user.avatar ? { uri: user.avatar } : defaultAvatar} 
-        mr={4}
+        size={AVATAR_SIZE} 
+        source={ 
+          user.avatar ? 
+          { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` } 
+          : defaultAvatar 
+        } 
         alt="avatar do usuário"
       />
 

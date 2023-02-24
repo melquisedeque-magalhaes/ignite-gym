@@ -10,9 +10,12 @@ import { api } from "@services/api";
 import { Loading } from "@components/Loading";
 
 import { HistoryByDay } from "@typings/historyByDay";
+import { useAuth } from "@hooks/useAuth";
 
 export function History() {
   const toast = useToast()
+
+  const { refreshedToken } = useAuth()
 
   const [history, setHistory] = useState<HistoryByDay []>({} as HistoryByDay [])
 
@@ -43,7 +46,7 @@ export function History() {
   useFocusEffect(
     useCallback(() => {
       historyExercise()
-    }, [])
+    }, [refreshedToken])
   )
 
   return(
@@ -51,7 +54,7 @@ export function History() {
       <ScreenHeader title="Histórico de Exercícios" />
 
       {
-        isLoading ? <Loading /> : (
+        isLoading ? <Loading /> : history?.length && (
           <SectionList 
             sections={history}
             keyExtractor={item => String(item.id)}

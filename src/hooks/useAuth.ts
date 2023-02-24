@@ -17,7 +17,7 @@ interface StorageUserAndTokenProps {
 }
 
 export function useAuth() {
-  const { user, setUser } = authStore()
+  const { user, setUser, refreshedToken, setRefreshedToken } = authStore()
 
   const [isLoadingUserStorage, setIsLoadingUserStorage] = useState(true)
 
@@ -76,8 +76,20 @@ export function useAuth() {
     }
   }
 
+  function updateToken(token: string) {
+    setRefreshedToken(token) 
+  }
+
   useEffect(() => {
     getUser()
+  }, [])
+
+  useEffect(() => {
+    const subscribe = api.registerInterceptTokenManager({ signOut, updateToken })
+
+    return () => {
+      subscribe()
+    }
   }, [])
 
   async function signOut() {
@@ -100,6 +112,7 @@ export function useAuth() {
     user,
     updateUser,
     signOut,
-    isLoadingUserStorage
+    isLoadingUserStorage,
+    refreshedToken
   }
 }

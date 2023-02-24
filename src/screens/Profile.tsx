@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Center, Heading, ScrollView, Skeleton, useToast, VStack } from "native-base";
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
@@ -11,10 +11,13 @@ import { ScreenHeader } from "@components/ScreenHeader";
 import { useAuth } from "@hooks/useAuth";
 
 import defaultAvatar from '@assets/userPhotoDefault.png'
+
 import { api } from "@services/api";
+
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { profileUpdateSchema } from "@validators/profileUpdateSchema";
+
 import { AppError } from "@errors/AppError";
 
 const AVATAR_SIZE = 148
@@ -32,7 +35,7 @@ export function Profile() {
 
   const [isAvatarLoading, setIsAvatarLoading] = useState(false)
 
-  const [avatar, setAvatar] = useState<string | null>(null)
+  const [avatar, setAvatar] = useState<string | null>(`${api.defaults.baseURL}/avatar/${user.avatar}`)
   const [isLoading, setIsLoading] = useState(false)
 
   const toast = useToast()
@@ -71,7 +74,35 @@ export function Profile() {
           return
         }
 
+        const fileExtension = avatarSelected.assets[0].uri.split('.').pop()
+
+        const photoFile = {
+          name: `${user.name.trim()}.${fileExtension}`.toLocaleLowerCase(),
+          uri: avatarSelected.assets[0].uri,
+          type: `${avatarSelected.assets[0].type}/${fileExtension}`
+        } as any
+
+        const avatarFormData = new FormData()
+
+        avatarFormData.append('avatar', photoFile)
+
+        const userDataUpdated = await api.patch('/users/avatar', avatarFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+        const nameAvatar = userDataUpdated.data.avatar
+
+        toast.show({
+          title: 'Avatar atualizado com sucesso!',
+          placement: 'top',
+          bgColor: 'green.500'
+        })
+
         setAvatar(avatarSelected.assets[0].uri)
+
+        await updateUser({...user, avatar: nameAvatar }) 
       }
   
     }catch(err) {
@@ -132,7 +163,11 @@ export function Profile() {
             : 
               <Avatar 
                 size={AVATAR_SIZE} 
-                source={ avatar ? { uri:  avatar } : defaultAvatar } 
+                source={ 
+                  avatar ? 
+                  { uri: avatar } 
+                  : defaultAvatar 
+                } 
                 alt="avatar do usuário"
               />
 

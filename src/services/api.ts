@@ -1,54 +1,36 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosInstance } from 'axios'
 
 import { AppError } from '@errors/AppError'
 import { getAuthTokenStorage, authTokenStorageSave } from '@storage/authTokenStorage'
 
 interface PromiseType {
-  resolve: (value?: unknown) => void
-  reject: (resow?: unknown) => void
-}
-
-interface ProcessQueueProps {
-  error: Error | null
-  token: string | null
+  onSucess: (token: string) => void
+  onError: (error: AxiosError) => void
 }
 
 interface RegisterInterceptTokenManagerProps {
   signOut: () => void
-  updateToken: (token: string) => void 
 }
 
 interface ApiInstanceProps extends AxiosInstance {
-  registerInterceptTokenManager: ({ signOut, updateToken }: RegisterInterceptTokenManagerProps) => () => void
+  registerInterceptTokenManager: ({ signOut }: RegisterInterceptTokenManagerProps) => () => void
 }
 
 const api = axios.create({
-  baseURL: 'http://192.168.100.84:3333'
+  baseURL: 'http://192.168.100.50:3333'
 }) as ApiInstanceProps
 
 let isRefreshing = false
 
 let failedQueue: Array<PromiseType> = []
 
-function processQueue({ error, token = null }: ProcessQueueProps){
-  failedQueue.forEach(request => {
-    if(error){
-      request.reject(error)
-    }
-
-    request.resolve(token)
-  })
-
-  failedQueue = []
-}
-
-api.registerInterceptTokenManager = ({ signOut, updateToken }) => {
+api.registerInterceptTokenManager = ({ signOut }) => {
   const interceptTokenManager = api.interceptors.response.use(response => response, async requestError => {
-    if(requestError?.response.status === 401){
-      if(requestError.response.data?.message === 'token.expired' || requestError.response.data?.message === 'token.invalid'){
-        const oldToken = await getAuthTokenStorage()
+    if(requestError?.response?.status === 401){
+      if(requestError?.response.data?.message === 'token.expired' || requestError?.response?.data?.message === 'token.invalid'){
+        const { refreshToken } = await getAuthTokenStorage()
 
-        if(!oldToken){
+        if(!refreshToken){
           signOut()
 
           return Promise.reject(requestError)
@@ -57,13 +39,14 @@ api.registerInterceptTokenManager = ({ signOut, updateToken }) => {
         const originalRequest = requestError.config
 
         if(isRefreshing) {
-          return new Promise((resolve, reject) => {
-            failedQueue.push({ resolve,reject })
-          }).then(token => {
-            originalRequest.headers['Authorization'] = `Bearer ${token}`
-            return axios(originalRequest)
-          }).catch(error => {
-            throw error
+            return new Promise((resolve, reject) => {
+              failedQueue.push({ 
+                onSucess: (token: string) => {
+                  originalRequest.headers = { 'Authorization': `Bearer ${token}` };
+                  resolve(api(originalRequest))
+                },
+                onError: (error: AxiosError) => reject(error)
+              })
           })
         }
 
@@ -71,23 +54,34 @@ api.registerInterceptTokenManager = ({ signOut, updateToken }) => {
 
         return new Promise(async (resolve, reject) => {
           try {
-            const { data } = await api.post('/sessions/refresh-token', { token: oldToken })
+            const { data } = await api.post('/sessions/refresh-token', { refresh_token: refreshToken })
 
-            await authTokenStorageSave(data.token)
+            await authTokenStorageSave({ token: data.token, refreshToken: data.refresh_token })
 
-            api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-            originalRequest.headers['Authorization'] = `Bearer ${data.token}`
+            if(originalRequest.data)
+              originalRequest.data = JSON.parse(originalRequest.data)
 
-            updateToken(data.token)
+            originalRequest.headers = { 'Authorization': `Bearer ${data.token}` };
+            api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
-            processQueue({ error: null, token: data.token })
-            resolve(originalRequest)
+            failedQueue.forEach(request => {
+              request.onSucess(data.token)
+            })
+
+            console.log("TOKEN ATUALIZADO");
+
+            resolve(api(originalRequest))
+
           }catch(error: any) {
-            processQueue({ error, token: null })
-            reject(error)
+            failedQueue.forEach(request => {
+              request.onError(error)
+            })
+
             signOut()
+            reject(error)
           }finally{
             isRefreshing = false
+            failedQueue = []
           }
         })
       }

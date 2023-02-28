@@ -35,12 +35,12 @@ export function Profile() {
 
   const [isAvatarLoading, setIsAvatarLoading] = useState(false)
 
-  const [avatar, setAvatar] = useState<string | null>(`${api.defaults.baseURL}/avatar/${user.avatar}`)
+  const [avatar, setAvatar] = useState<string | null>(user?.avatar ? `${api.defaults.baseURL}/avatar/${user?.avatar}` : null)
   const [isLoading, setIsLoading] = useState(false)
 
   const toast = useToast()
 
-  const { control, handleSubmit, formState: { errors }, setError } = useForm<ProfileForm>({
+  const { control, handleSubmit, formState: { errors } } = useForm<ProfileForm>({
     defaultValues: {
       name: user.name,
       email: user.email
@@ -119,7 +119,8 @@ export function Profile() {
       await api.put('/users', {
         name,
         old_password,
-        password: new_password
+        password: new_password,
+        confirm_password
       })
 
       toast.show({

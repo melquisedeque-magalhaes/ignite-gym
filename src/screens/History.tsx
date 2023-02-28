@@ -10,14 +10,11 @@ import { api } from "@services/api";
 import { Loading } from "@components/Loading";
 
 import { HistoryByDay } from "@typings/historyByDay";
-import { useAuth } from "@hooks/useAuth";
 
 export function History() {
   const toast = useToast()
 
-  const { refreshedToken } = useAuth()
-
-  const [history, setHistory] = useState<HistoryByDay []>({} as HistoryByDay [])
+  const [history, setHistory] = useState<HistoryByDay[]>([])
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -25,13 +22,13 @@ export function History() {
     try {
       setIsLoading(true)
 
-      const response = await api.get('history')
+      const { data } = await api.get('/history')
 
-      setHistory(response.data)
+      setHistory(data)
     }catch(error){
       const isAppError = error instanceof AppError
 
-      const title = isAppError ? error.message : 'Não foi possível exercício como realizado!'
+      const title = isAppError ? error.message : 'Não foi possivel mostrar historico de exercicios'
 
       toast.show({
         title,
@@ -46,7 +43,7 @@ export function History() {
   useFocusEffect(
     useCallback(() => {
       historyExercise()
-    }, [refreshedToken])
+    }, [])
   )
 
   return(
@@ -54,7 +51,8 @@ export function History() {
       <ScreenHeader title="Histórico de Exercícios" />
 
       {
-        isLoading ? <Loading /> : history?.length && (
+        isLoading ? <Loading /> : 
+        (
           <SectionList 
             sections={history}
             keyExtractor={item => String(item.id)}

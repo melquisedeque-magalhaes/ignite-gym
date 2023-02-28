@@ -17,12 +17,12 @@ interface StorageUserAndTokenProps {
 }
 
 export function useAuth() {
-  const { user, setUser, refreshedToken, setRefreshedToken } = authStore()
+  const { user, setUser, setToken, token } = authStore()
 
   const [isLoadingUserStorage, setIsLoadingUserStorage] = useState(true)
 
   async function userAndTokenUpdate({ token, userData }: StorageUserAndTokenProps) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     setUser(userData)
   }
@@ -34,11 +34,11 @@ export function useAuth() {
         password
       })
   
-      if(data.user && data.token){
+      if(data.user && data.token && data.refresh_token){
         setIsLoadingUserStorage(true)
 
         await userSaveStorage(data.user)
-        await authTokenStorageSave(data.token)
+        await authTokenStorageSave({ token: data.token, refreshToken: data.refresh_token })
         userAndTokenUpdate({ token: data.token, userData: data.user })
       }
     }catch(error) {
@@ -64,10 +64,10 @@ export function useAuth() {
   async function getUser() {
     try {
       const userStorage = await getUserStorage()
-      const tokenStorage = await getAuthTokenStorage()
+      const { token } = await getAuthTokenStorage()
 
-      if(userStorage && tokenStorage)
-        userAndTokenUpdate({ userData: userStorage, token: tokenStorage })
+      if(userStorage && token)
+        userAndTokenUpdate({ userData: userStorage, token })
       
     }catch(error) {
       throw error
@@ -77,7 +77,7 @@ export function useAuth() {
   }
 
   function updateToken(token: string) {
-    setRefreshedToken(token) 
+    setToken(token) 
   }
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export function useAuth() {
   }, [])
 
   useEffect(() => {
-    const subscribe = api.registerInterceptTokenManager({ signOut, updateToken })
+    const subscribe = api.registerInterceptTokenManager({ signOut })
 
     return () => {
       subscribe()
@@ -113,6 +113,6 @@ export function useAuth() {
     updateUser,
     signOut,
     isLoadingUserStorage,
-    refreshedToken
+    token
   }
 }

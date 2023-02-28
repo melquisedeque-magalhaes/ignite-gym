@@ -1,5 +1,5 @@
 export interface ExerciseHistory {
-  id: number
+  id: string
   name: string
   group: string
   hour: string

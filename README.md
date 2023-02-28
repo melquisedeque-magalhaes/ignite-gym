@@ -2,8 +2,8 @@
 <!-- markdownlint-disable MD041 -->
 
 <div align="center">
-   <a href="https://github.com/mgckaled">
-      <img alt="Made by mgckaled" src="https://img.shields.io/badge/made%20by-mgckaled-yellow">
+   <a href="https://github.com/melquisedeque-magalhaes">
+      <img alt="Made by Melqui Sodre" src="https://img.shields.io/badge/made%20by-mgckaled-yellow">
    </a>
    <img alt="GitHub Repo Size" src="https://img.shields.io/github/repo-size/mgckaled/ignite-reactnative_ignitegym">
    <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/mgckaled/ignite-reactnative_ignitegym">
@@ -47,8 +47,6 @@
 ## Sobre o Projeto
 
 A ideia dessa aplicação é termos um app onde podemos consultar exercícios de academia. Nesse aplicativo vamos ter dois tipos de navegações, uma navegação em pilha para as rotas publicas e uma navegação em abas, na parte inferior para as rotas privadas. Para estilizar essa aplicação utilizaremos o NativeBase, uma biblioteca de componentes estilizados para facilitar na criação do app.
-
-Análises e comentários sobre o código [AQUI](/.github/docs/index.md).
 
 ## Layout
 
@@ -121,11 +119,32 @@ Para visualizar a documentação da API, acesse [http://localhost:3333/api-docs]
 - [TypeScript](https://www.typescriptlang.org/)
 - [Expo](https://expo.dev/)
 - [NativeBase](https://nativebase.io/)
+- [React Native](https://reactnative.dev/)
+- [Axios](https://axios-http.com/ptbr/docs/intro)
+- [Yup](https://www.npmjs.com/package/yup)
+- [React Hook Form](https://react-hook-form.com/)
+- [React Native SVG](https://github.com/software-mansion/react-native-svg)
+- [React Native SVG Transformer](https://www.npmjs.com/package/react-native-svg-transformer?activeTab)
+- [Expo Image Picker](https://docs.expo.dev/versions/latest/sdk/imagepicker/)
+- [React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)
+- [React Navigation](https://reactnavigation.org/)
+- [React Navigation - Stack Navigator](https://reactnavigation.org/docs/native-stack-navigator/)
+- [React Navigation - Bottom Tabs Navigator](https://reactnavigation.org/docs/bottom-tab-navigator/)
+- [Async Storage](https://react-native-async-storage.github.io/async-storage/)
+- [Babel Plugin Inline Dotenv](https://www.npmjs.com/package/babel-plugin-inline-dotenv)
+- [Babel Plugin Module Resolver](https://www.npmjs.com/package/babel-plugin-module-resolver)
 
 ## Licença
 
 Distribuído sob a licença **_MIT_**. Veja [LICENSE](LICENSE) para mais informações.
 
-## Autor
+## Suporte
 
-Feito por Melqui. Entre em contato!
+
+<a href="https://www.buymeacoffee.com/melqui" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60px" width="217px" />
+</a>
+
+---
+
+<p align="center">With 💜, by Melqui Sodré.</p>

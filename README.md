@@ -41,6 +41,12 @@
 <img src=".github/assets/landing.png" alt="Landing page IgniteGym" />
 <br>
 
+<img src=".github/assets/signin.png" alt="Landing page IgniteGym" />
+<br>
+
+<img src=".github/assets/home.png" alt="Landing page IgniteGym" />
+<br>
+
 ## Sobre o Projeto
 
 A ideia dessa aplicação é termos um app onde podemos consultar exercícios de academia. Nesse aplicativo vamos ter dois tipos de navegações, uma navegação em pilha para as rotas publicas e uma navegação em abas, na parte inferior para as rotas privadas. Para estilizar essa aplicação utilizaremos o NativeBase, uma biblioteca de componentes estilizados para facilitar na criação do app.

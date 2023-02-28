@@ -2,9 +2,6 @@
 <!-- markdownlint-disable MD041 -->
 
 <div align="center">
-   <a href="https://github.com/melquisedeque-magalhaes">
-      <img alt="Made by Melqui Sodre" src="https://img.shields.io/badge/made%20by-mgckaled-yellow">
-   </a>
    <img alt="GitHub Repo Size" src="https://img.shields.io/github/repo-size/mgckaled/ignite-reactnative_ignitegym">
    <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/mgckaled/ignite-reactnative_ignitegym">
    <a href="https://github.com/mgckaled/ignite-reactnative_ignitegym/commits/main">
@@ -35,7 +32,7 @@
 [**Sobre o Projeto**](#sobre-o-projeto) &nbsp;&nbsp;**•**&nbsp;&nbsp;
 [**Layout**](#layout) &nbsp;&nbsp;**•**&nbsp;&nbsp;
 [**Configurações**](#configurações) &nbsp;&nbsp;**•**&nbsp;&nbsp;
-[**Texnologias**](#tecnologias) &nbsp;&nbsp;**•**&nbsp;&nbsp;
+[**Tecnologias**](#tecnologias) &nbsp;&nbsp;**•**&nbsp;&nbsp;
 [**Licença**](#licença)&nbsp;&nbsp;**•**&nbsp;&nbsp;
 [**Autor**](#autor)
 
@@ -72,7 +69,7 @@ Clonar repositório:
 
 ```bash
 # Execute o comando git clone para realizar o clone do repositório
-$ git clone https://github.com/mgkclaed/ignite-reactnative_ignitegym.git
+$ git clone https://github.com/melquisedeque-magalhaes/ignite-gym
 # ou execute
 $ gh repo clone mgckaled/ignite-reactnative_ignitegym
 # Entre na pasta do repositório clonado
@@ -83,7 +80,7 @@ Dependências e inicialização:
 
 ```bash
 ## instalar dependências
-$ npm i
+$ npm i or yarn
 # inicializar expo
 $ npx expo start
 ```
@@ -102,13 +99,13 @@ Scripts Backend:
 
 ```bash
 # Rodar API em ambiente de desenvolvimento:
-$ npm run dev
+$ npm run dev or yarn dev 
 # Rodar API em ambiente de procução:
-$ npm start
+$ npm start or yarn start
 # Criar banco de dados
-$ npm run migrate
+$ npm run migrate or yarn migrate
 # Inserir dados no banco de dados:
-$ npm run seed
+$ npm run seed or yarn seed
 ```
 
 Para visualizar a documentação da API, acesse [http://localhost:3333/api-docs](http://localhost:3333/api-docs) em ambiente de desenvolvimento.
